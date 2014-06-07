@@ -81,9 +81,23 @@ body {
     .header {
         margin-bottom: 30px;
     }
-    
+
     /* Remove the bottom border on the jumbotron for visual effect */
     .jumbotron {
         border-bottom: 0;
     }
+}
+
+.video-thumbnail {
+    width: 203px;
+    height: 140px;
+    margin: 0 0 8px 0;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    background-position: center;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
 }
