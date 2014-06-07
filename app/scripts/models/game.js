@@ -8,7 +8,7 @@ EP.Models.Game = Backbone.Model.extend({
 
   parse: function(data, options) {
     return {
-      id: data.profile_id,
+      id: data.id,
       name: data.name
     };
   }

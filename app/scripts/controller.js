@@ -7,26 +7,39 @@ EP.Controller = Marionette.Controller.extend({
   },
 
   showVideos: function() {
-    var videosListView = this._createVideosListView(),
-        gamesFilterView = this._createGamesFilterView(),
-        videosLayout = this._createVideosLayout();
-
-    videosLayout.on('show', function() {
-      videosLayout.gamesFilterRegion.show(gamesFilterView);
-      videosLayout.videosListRegion.show(videosListView);
-    });
-
+    var videosLayout = this._createVideosLayout();
     this._mainRegion.show(videosLayout);
+    this._router.navigate('videos');
   },
 
   showVideo: function(videoId) {
+    var videoView = this._createVideoView(videoId);
+    this._mainRegion.show(videoView);
+    this._router.navigate('videos/' + videoId);
+  },
 
+  _createVideosLayout: function() {
+    var layout = new EP.Views.VideosLayout(),
+        gamesFilterView = this._createGamesFilterView(),
+        videosListView = this._createVideosListView();
+
+    layout.on('show', function() {
+      layout.gamesFilterRegion.show(gamesFilterView);
+      layout.videosListRegion.show(videosListView);
+    });
+
+    return layout;
   },
 
   _createVideosListView: function() {
     var view = new EP.Views.VideosList({
       collection: this._getVideosCollection()
     });
+
+    this.listenTo(view, 'video:clicked', function(view) {
+      this.showVideo(view.model.id);
+    });
+
     return view;
   },
 
@@ -40,28 +53,31 @@ EP.Controller = Marionette.Controller.extend({
     return view;
   },
 
-  _createVideosLayout: function() {
-    var layout = new EP.Views.VideosLayout();
-    return layout;
+  _createVideoView: function(videoId) {
+    var view = new EP.Views.Video({
+      model: this._getVideoById(videoId)
+    });
+
+    return view;
   },
 
   _getVideosCollection: function() {
-    this._videos = this._videos || this._createVideosCollection();
+    this._videos = this._videos || this._createAndFetchVideosCollection();
     return this._videos;
   },
 
-  _createVideosCollection: function() {
+  _createAndFetchVideosCollection: function() {
     var collection = new EP.Collections.Videos();
     collection.fetch();
     return collection;
   },
 
   _getGamesCollection: function() {
-    this._games = this._games || this._createGamesCollection();
+    this._games = this._games || this._createAndFetchGamesCollection();
     return this._games;
   },
 
-  _createGamesCollection: function() {
+  _createAndFetchGamesCollection: function() {
     var collection = new EP.Collections.Games();
     collection.fetch();
     return collection;
@@ -70,5 +86,25 @@ EP.Controller = Marionette.Controller.extend({
   _filterVideosByGame: function(gameId) {
     var videos = this._getVideosCollection();
     videos.filterByGameId(gameId);
+  },
+
+  _getVideoById: function(videoId) {
+    return this._getVideoFromVideosCollection(videoId) || this._createAndFetchVideoModel(videoId);
+  },
+
+  _getVideoFromVideosCollection: function(videoId) {
+    if (this._videos) {
+      return this._videos.get(videoId);
+    }
+  },
+
+  _createAndFetchVideoModel: function(videoId) {
+    var model = new EP.Models.Video({
+      id: videoId
+    });
+
+    model.fetch();
+
+    return model;
   }
 });
