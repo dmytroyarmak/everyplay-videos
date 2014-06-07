@@ -34,6 +34,9 @@ EP.Controller = Marionette.Controller.extend({
     var view = new EP.Views.GamesFilter({
       collection: this._getGamesCollection()
     });
+
+    this.listenTo(view, 'game:selected', this._filterVideosByGame);
+
     return view;
   },
 
@@ -62,5 +65,10 @@ EP.Controller = Marionette.Controller.extend({
     var collection = new EP.Collections.Games();
     collection.fetch();
     return collection;
+  },
+
+  _filterVideosByGame: function(gameId) {
+    var videos = this._getVideosCollection();
+    videos.filterByGameId(gameId);
   }
 });

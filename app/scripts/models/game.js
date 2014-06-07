@@ -7,6 +7,9 @@ EP.Models.Game = Backbone.Model.extend({
   },
 
   parse: function(data, options) {
-    return _.pick(data, 'id', 'name');
+    return {
+      id: data.profile_id,
+      name: data.name
+    };
   }
 });

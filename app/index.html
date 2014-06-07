@@ -45,9 +45,10 @@
 
     <script type="text/template" id="tpl-games-filter">
       <h2>Filter</h2>
-      <select class="games-filter">
+      <select class="js-games-filter-select">
+        <option value="" selected="selected">All</option>
         <% _.each(items, function(game) { %>
-          <option value="game.id"><%- game.name %></option>
+          <option value="<%- game.id %>"><%- game.name %></option>
         <% }) %>
       </select>
     </script>
