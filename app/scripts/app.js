@@ -7,7 +7,7 @@ var EP = new Marionette.Application({
 });
 
 EP.addRegions({
-  mainRegion: '.main-region'
+  mainRegion: '.js-main-region'
 });
 
 EP.addInitializer(function() {
@@ -18,7 +18,7 @@ EP.addInitializer(function() {
   });
 
   router.processAppRoutes(controller, {
-    'videos': 'showLatestVideos',
+    'videos': 'showVideos',
     'videos/:id': 'showVideo'
   });
 });

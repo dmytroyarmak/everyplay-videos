@@ -2,6 +2,7 @@
 
 EP.Models.Video = Backbone.Model.extend({
   defaults: {
+    id: null,
     title: null,
     thumbnailUrl: null,
     authorName: null
