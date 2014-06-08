@@ -121,7 +121,10 @@
     <script src="scripts/views/video.js"></script>
     <!-- endbuild -->
     <script>
-      EP.start();
+      EP.start({
+        apiBaseUrl: 'https://everyplay.com/api/',
+        clientId: 'f950e92afabc2aa72f08e40fa86024cbb5deeaee'
+      });
     </script>
 </body>
 </html>

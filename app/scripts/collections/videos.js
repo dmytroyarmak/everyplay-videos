@@ -1,16 +1,37 @@
 'use strict';
 
 EP.Collections.Videos = Backbone.Collection.extend({
-  url: 'https://everyplay.com/api/videos?order=created_at&client_id=f950e92afabc2aa72f08e40fa86024cbb5deeaee',
+  url: function() {
+    if (this._gameId) {
+      return 'games/' + this._gameId + '/videos';
+    } else {
+      return 'videos';
+    }
+  },
+
   model: EP.Models.Video,
 
-  filterByGameId: function(gameId) {
-    if (gameId) {
-      this.fetch({
-        url: 'https://everyplay.com/api/games/' + gameId + '/videos?order=created_at&client_id=336d586b6e1b5e4a0f9eaa48e7e697d8cd51db40'
-      });
-    } else {
-      this.fetch();
+  fetchData: {
+    order: 'created_at'
+  },
+
+  fetch: function(options) {
+    options = options || {};
+    options.data = _.extend(options.data || {}, this.fetchData);
+    return Backbone.Collection.prototype.fetch.call(this, options);
+  },
+
+  setFilterByGameId: function(gameId) {
+    if (this._gameId !== gameId) {
+      this._gameId = gameId;
+      this.fetch({reset: true});
+    }
+  },
+
+  unsetFilterByGameId: function() {
+    if (this._gameId) {
+      this._gameId = null;
+      this.fetch({reset: true});
     }
   }
 });

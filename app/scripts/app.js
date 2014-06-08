@@ -10,6 +10,18 @@ EP.addRegions({
   mainRegion: '.js-main-region'
 });
 
+EP.addInitializer(function(params) {
+  // Configure AJAX requests
+  Backbone.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+    // Add prefix with base url for API
+    options.url = params.apiBaseUrl + options.url;
+    // Add client_id to all requests
+    options.data = $.param(_.extend(originalOptions.data || {}, {
+      client_id: params.clientId
+    }));
+  });
+});
+
 EP.addInitializer(function() {
   var router = new EP.Router(),
   controller = new EP.Controller({

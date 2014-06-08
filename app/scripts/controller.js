@@ -32,9 +32,12 @@ EP.Controller = Marionette.Controller.extend({
   },
 
   _createVideosListView: function() {
-    var view = new EP.Views.VideosList({
-      collection: this._getVideosCollection()
-    });
+    var videos = this._getVideosCollection(),
+        view = new EP.Views.VideosList({
+          collection: videos
+        });
+
+    videos.unsetFilterByGameId();
 
     this.listenTo(view, 'video:clicked', function(view) {
       this.showVideo(view.model.id);
@@ -85,7 +88,7 @@ EP.Controller = Marionette.Controller.extend({
 
   _filterVideosByGame: function(gameId) {
     var videos = this._getVideosCollection();
-    videos.filterByGameId(gameId);
+    videos.setFilterByGameId(gameId);
   },
 
   _getVideoById: function(videoId) {

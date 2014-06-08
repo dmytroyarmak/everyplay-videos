@@ -1,9 +1,7 @@
 'use strict';
 
 EP.Models.Video = Backbone.Model.extend({
-  url: function() {
-    return 'https://everyplay.com/api/videos/' + this.id + '?client_id=f950e92afabc2aa72f08e40fa86024cbb5deeaee';
-  },
+  urlRoot: 'videos',
 
   defaults: {
     id: null,
