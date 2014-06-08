@@ -6,12 +6,15 @@ var EP = new Marionette.Application({
   Views: {}
 });
 
-EP.addRegions({
-  mainRegion: '.js-main-region'
+// Initialize main region of application
+EP.addInitializer(function() {
+  EP.addRegions({
+    mainRegion: '.js-main-region'
+  });
 });
 
+// Configure AJAX requests
 EP.addInitializer(function(params) {
-  // Configure AJAX requests
   Backbone.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
     // Add prefix with base url for API
     options.url = params.apiBaseUrl + options.url;
@@ -22,19 +25,27 @@ EP.addInitializer(function(params) {
   });
 });
 
+// Create router instance
 EP.addInitializer(function() {
-  var router = new EP.Router(),
-  controller = new EP.Controller({
-    router: router,
+  EP.router = new EP.Router();
+});
+
+// Initialize videos module
+EP.addInitializer(function() {
+  var controller = new EP.Controller({
+    router: EP.router,
     mainRegion: this.mainRegion
   });
 
-  router.processAppRoutes(controller, {
+  EP.router.processAppRoutes(controller, {
     'videos': 'showVideos',
     'videos/:id': 'showVideo'
   });
+
+  EP.router.setHomePath('videos');
 });
 
+// Start Backbone history after application's initialization
 EP.on('initialize:after', function(options){
   if (Backbone.history){
     Backbone.history.start();

@@ -11,6 +11,10 @@ EP.Collections.Videos = Backbone.Collection.extend({
 
   model: EP.Models.Video,
 
+  /**
+   * Data that will be passed to API when fetch
+   * @type {Object}
+   */
   fetchData: {
     order: 'created_at'
   },
@@ -21,6 +25,10 @@ EP.Collections.Videos = Backbone.Collection.extend({
     return Backbone.Collection.prototype.fetch.call(this, options);
   },
 
+  /**
+   * Set filter by game's id to collection and fetch new records.
+   * @param  {number} gameId - id of game to filter videos by
+   */
   setFilterByGameId: function(gameId) {
     if (this._gameId !== gameId) {
       this._gameId = gameId;
@@ -28,6 +36,9 @@ EP.Collections.Videos = Backbone.Collection.extend({
     }
   },
 
+  /**
+   * Unset filter by game's id to collection and fetch new records.
+   */
   unsetFilterByGameId: function() {
     if (this._gameId) {
       this._gameId = null;

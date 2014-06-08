@@ -1,17 +1,31 @@
 'use strict';
 
 EP.Controller = Marionette.Controller.extend({
+  /**
+   * Main controller of application.
+   * @constructor
+   * @param {Object} options - Object with options for controller.
+   * @param {EP.Router} options.router - Instance of router for navigation.
+   * @param {Marionette.Region} options.mainRegion - Main region of application to show views.
+   */
   initialize: function(options) {
     this._router = options.router;
     this._mainRegion = options.mainRegion;
   },
 
+  /**
+   * Show page with latest videos and filter by game.
+   */
   showVideos: function() {
     var videosLayout = this._createVideosLayout();
     this._mainRegion.show(videosLayout);
     this._router.navigate('videos');
   },
 
+  /**
+   * Show page with for video with player.
+   * @params {number} viodeId - Id of video to show.
+   */
   showVideo: function(videoId) {
     var videoView = this._createVideoView(videoId);
     this._mainRegion.show(videoView);
